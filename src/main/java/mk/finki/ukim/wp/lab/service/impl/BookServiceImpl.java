@@ -8,6 +8,7 @@ import mk.finki.ukim.wp.lab.service.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -39,5 +40,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findBookByIsbn(String isbn) {
         return this.bookRepository.findByIsbn(isbn);
+    }
+
+    @Override
+    public Optional<Book> saveBook(String title, String isbn, String genre, int year, Long bookStoreId) {
+        return Optional.empty();
     }
 }
