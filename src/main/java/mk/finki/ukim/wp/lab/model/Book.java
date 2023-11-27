@@ -8,9 +8,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Book {
+     Long id;
      String isbn;
      String title;
      String genre;
      int year;
      List<Author> authors;
+     private BookStore bookStore;
 }
