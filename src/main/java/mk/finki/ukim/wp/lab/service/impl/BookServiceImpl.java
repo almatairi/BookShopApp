@@ -29,13 +29,26 @@ public class BookServiceImpl implements BookService {
     @Override
     public Author addAuthorToBook(Long authorId, String isbn) {
         Author author = authorRepository.findById(authorId).orElse(null);
-        Book book = bookRepository.findByIsbn(isbn);
 
-        if (author != null && book != null) {
-            book.getAuthors().add(author);
+        if (author == null) {
+            // Handle the case where the author is not found
+            throw new RuntimeException("Author not found with ID: " + authorId);
         }
+
+        Optional<Book> optionalBook = bookRepository.findByIsbn(isbn);
+
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            book.getAuthors().add(author);
+            bookRepository.save(book);
+        } else {
+            // Handle the case where the book is not found by ISBN
+            throw new RuntimeException("Book not found with ISBN: " + isbn);
+        }
+
         return author;
     }
+
 
     @Override
     public Optional<Book> findBookByIsbn(String isbn) {
@@ -49,7 +62,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void editBook(String title, String isbn, String genre, int year, Long bookId) {
-        bookRepository.editBook(bookId , title, isbn, genre, year, bookId);
 
     }
 

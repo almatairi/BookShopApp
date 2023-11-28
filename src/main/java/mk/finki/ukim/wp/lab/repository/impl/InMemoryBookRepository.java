@@ -75,17 +75,17 @@ public class InMemoryBookRepository {
         return DataHolder.books.stream().filter(b -> b.getIsbn().equals(isbn)).findFirst();
     }
 
-    public void editBook(Long bookId, String title, String isbn, String genre, int year, Long id){
-        for (int i=0; i<books.size(); i++){
-            if(books.get(i).id.equals(bookId)){
-                books.get(i).title = title;
-                books.get(i).isbn = isbn;
-                books.get(i).genre = genre;
-                books.get(i).year = year;
-                //books.get(i)
+    public void editBook(Long bookId, String title, String isbn, String genre, int year, Long id) {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId().equals(bookId)) {
+                books.get(i).setTitle(title);
+                books.get(i).setIsbn(isbn);
+                books.get(i).setGenre(genre);
+                books.get(i).setYear(year);
             }
         }
     }
+
     public void delete(Long bookId){
         DataHolder.books.removeIf(b->b.getTitle().equals(bookId));
     }
