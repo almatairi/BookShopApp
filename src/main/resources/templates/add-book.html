@@ -34,7 +34,7 @@
 
   <label for="bookstore">Bookstore:</label>
   <select id="bookstore" name="bookstore" th:field="*{bookstore.id}" required>
-    <option th:each="bs : ${bookstores}" th:value="${bs.id}" th:text="${bs.name}"></option>
+    <option th:each="bs : ${bookstores}" th:value="${bs}" th:text="${bs.name}" th:selected="${bs.id == book.bookstore.id}"></option>
   </select>
 
   <button type="submit">Save</button>

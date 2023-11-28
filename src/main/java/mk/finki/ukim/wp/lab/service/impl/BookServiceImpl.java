@@ -27,30 +27,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Author addAuthorToBook(Long authorId, String isbn) {
-        Author author = authorRepository.findById(authorId).orElse(null);
-
-        if (author == null) {
-            // Handle the case where the author is not found
-            throw new RuntimeException("Author not found with ID: " + authorId);
-        }
-
-        Optional<Book> optionalBook = bookRepository.findByIsbn(isbn);
-
-        if (optionalBook.isPresent()) {
-            Book book = optionalBook.get();
-            book.getAuthors().add(author);
-            bookRepository.save(book);
-        } else {
-            // Handle the case where the book is not found by ISBN
-            throw new RuntimeException("Book not found with ISBN: " + isbn);
-        }
-
-        return author;
-    }
-
-
-    @Override
     public Optional<Book> findBookByIsbn(String isbn) {
         return this.bookRepository.findByIsbn(isbn);
     }
@@ -75,5 +51,16 @@ public class BookServiceImpl implements BookService {
         bookRepository.delete(bookId);
     }
 
+    @Override
+    public Optional<Book> findById(Long id) {
+        return this.bookRepository.findById(id);
+    }
 
+    @Override
+    public void addAuthorToBook(Long authorId, String isbn){
+        Author author = authorRepository.findById(authorId).orElseThrow(() -> new IllegalArgumentException("Author not found"));
+        Book book = bookRepository.findByIsbn(isbn).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+        book.getAuthors().add(author);
+        bookRepository.save(book);
+    }
 }

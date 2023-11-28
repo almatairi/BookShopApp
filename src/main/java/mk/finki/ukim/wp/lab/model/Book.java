@@ -8,13 +8,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Book {
-    public   Long id;
-    public   String isbn;
-    public   String title;
-    public    String genre;
-    public   int year;
-    public   List<Author> authors;
-    public BookStore bookStore;
+    private   Long id;
+    private   String isbn;
+    private   String title;
+    private    String genre;
+    private   int year;
+    private  List<Author> authors;
+    private BookStore bookStore;
 
     public Book( String isbn, String title, String genre, int year, List<Author> authors, BookStore bookStore) {
         this.id = (long) (Math.random() * 1000);
