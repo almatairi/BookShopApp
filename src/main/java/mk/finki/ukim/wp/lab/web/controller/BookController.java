@@ -35,7 +35,7 @@ public class BookController {
     }
 
     @GetMapping("/edit-form/{id}")
-    public String editBook(@PathVariable Long bookId){
+    public String getEditBookForm(){
         return null;
     }
 
