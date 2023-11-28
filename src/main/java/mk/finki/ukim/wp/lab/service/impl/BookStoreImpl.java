@@ -15,7 +15,6 @@ public class BookStoreImpl  implements BookStoreService {
         this.bookStoreRepository = bookStoreRepository;
     }
 
-    @Override
     public List<BookStore> findAll() {
         return this.bookStoreRepository.findAll();
     }

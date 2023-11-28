@@ -6,10 +6,9 @@ public class BookStore {
     private String city;
     private String address;
 
-    public BookStore( String name, String city, String address) {
+    public BookStore( String name, String city) {
         this.id = (long) (Math.random() * 1000);
         this.name = name;
         this.city = city;
-        this.address = address;
     }
 }

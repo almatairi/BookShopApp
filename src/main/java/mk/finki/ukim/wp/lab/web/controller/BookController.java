@@ -1,30 +1,33 @@
 package mk.finki.ukim.wp.lab.web.controller;
 
 import mk.finki.ukim.wp.lab.model.Book;
+import mk.finki.ukim.wp.lab.model.BookStore;
 import mk.finki.ukim.wp.lab.service.BookService;
 import mk.finki.ukim.wp.lab.service.BookStoreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
-    private final BookStoreService bookStores;
+    private final BookStoreService bookStoresService;
 
     public BookController(BookService bookService, BookStoreService bookStores) {
         this.bookService = bookService;
-        this.bookStores = bookStores;
+        this.bookStoresService = bookStores;
     }
 
-    @GetMapping
-    public String getBooksPage(@RequestParam(required = false) String error, Model model){
-        if(error != null && !error.isEmpty()){
-            model.addAttribute("hasError", true);
-            model.addAttribute("error", error);
-        }
+    @GetMapping("/books")
+    public String getBooksPage(Model model){
+        List<Book> books = bookService.listBooks();
+        List<BookStore> bookStores = bookStoresService.findAll();
+        model.addAttribute("books", books);
+        model.addAttribute("bookStores", bookStores);
         return "listBooks";
     }
 
@@ -35,19 +38,16 @@ public class BookController {
                            @RequestParam int year,
                            @RequestParam Long bookStoreId) {
          this.bookService.saveBook(title, isbn, genre, year, bookStoreId);
-         return "redirect:/listBooks";
+         return "redirect:/books";
     }
 
-    @GetMapping("/edit-form/{id}")
-    public String getEditBookForm(@PathVariable Long id, Model model){
-        // Retrieve the book by id and add it to the model
-        Book book = bookService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id"));
+    @GetMapping("/books/edit-form/{id}")
+   public String getEditBookForm(@PathVariable Long id, Model model){
+        Book book = bookService.findById(id).orElse(null);
+        List<BookStore> bookStores = bookStoresService.findAll();
         model.addAttribute("book", book);
-
-        // Add the list of bookstores to the model (assuming you have a method to retrieve them)
-        model.addAttribute("bookstores", bookStores);
-
-        return "editBook"; // Assuming you have an editBook.html Thymeleaf template
+        model.addAttribute("bookStores", bookStores);
+        return "add-book";
     }
 
     @PostMapping("/books/edit/{id}")
@@ -57,10 +57,9 @@ public class BookController {
                            @RequestParam String genre,
                            @RequestParam int year,
                            @RequestParam Long bookStoreId) {
-        // Call the service method to edit the book
         bookService.editBook(id, title, isbn, genre, year, bookStoreId);
 
-        return "redirect:/books"; // Redirect to the page displaying all books
+        return "redirect:/books";
     }
 
 
