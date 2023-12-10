@@ -37,7 +37,7 @@
                 <td th:text="${book.year}"></td>
                 <td>
                     <!-- Edit button linking to the edit page for the book -->
-                    <a th:href="@{'/edit/' + ${book.id}}">Edit</a>
+                    <a th:href="@{'/books/edit/' + ${book.id}}">Edit</a>
 
                     <!-- Delete button triggering a confirmation dialog and deleting the book if confirmed -->
                     <form th:action="@{'/delete/' + ${book.id}}" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this book?')">

@@ -22,16 +22,22 @@ public class BookController {
         this.bookStoresService = bookStores;
     }
 
-    @GetMapping("/books")
-    public String getBooksPage(Model model){
+    @GetMapping()
+    public String getBooksPage(@RequestParam(required = false) String error, Model model){
+
+        if (error != null && !error.isEmpty()) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", error);
+        }
         List<Book> books = bookService.listBooks();
         List<BookStore> bookStores = bookStoresService.findAll();
         model.addAttribute("books", books);
         model.addAttribute("bookStores", bookStores);
         return "listBooks";
+
     }
 
-    @PostMapping("/books/add")
+    @PostMapping("/add")
     public String saveBook(@RequestParam String title,
                            @RequestParam String isbn,
                            @RequestParam String genre,
@@ -41,9 +47,9 @@ public class BookController {
          return "redirect:/books";
     }
 
-    @GetMapping("/books/edit-form/{id}")
-   public String getEditBookForm(@PathVariable Long id, Model model){
-        Book book = bookService.findById(id).orElse(null);
+    @GetMapping("/edit/{id}")
+   public String getEditBookForm(@PathVariable String id, Model model){
+        Book book = bookService.findBookByIsbn(id).orElse(null);
         List<BookStore> bookStores = bookStoresService.findAll();
         model.addAttribute("book", book);
         model.addAttribute("bookStores", bookStores);
@@ -63,6 +69,19 @@ public class BookController {
     }
 
 
+    @GetMapping("/add-form")
+    public String getAddBookPage(Book book){
+       if(book.getAuthors().isEmpty()){
+           return "redirect:/add-form";
+       }
+       else{
+
+       }
+        List<Book> books = bookService.listBooks();
+        List<BookStore> bookStores = bookStoresService.findAll();
+
+        return "add-form";
+    }
     @DeleteMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable Long id){
         this.bookService.deleteById(id);
