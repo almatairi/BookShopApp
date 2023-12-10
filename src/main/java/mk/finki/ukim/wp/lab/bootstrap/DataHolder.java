@@ -1,6 +1,7 @@
 package mk.finki.ukim.wp.lab.bootstrap;
 
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import mk.finki.ukim.wp.lab.model.Author;
 import mk.finki.ukim.wp.lab.model.Book;
 import mk.finki.ukim.wp.lab.model.BookStore;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Getter
 public class DataHolder {
     public static List<Author> authors = new ArrayList<>();
     public static List<Book> books = new ArrayList<>();
