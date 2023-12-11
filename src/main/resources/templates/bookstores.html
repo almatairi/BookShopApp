@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Bookstores</title>
+</head>
+<body>
+<h1>Bookstores</h1>
+<ul>
+  <li th:each="bookStore : ${bookStores}">
+    <a th:href="@{/bookstores/{id}(id=${bookStore.id})}" th:text="${bookStore.name}">Bookstore Name</a>
+  </li>
+</ul>
+</body>
+</html>

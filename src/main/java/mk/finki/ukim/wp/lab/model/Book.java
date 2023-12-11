@@ -10,21 +10,21 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private   Long id;
-    private   String isbn;
-    private   String title;
-    private    String genre;
-    private   int year;
+    public    Long id;
+    public    String isbn;
+    public    String title;
+    public     String genre;
+    public    int year;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "author")
-    private  List<Author> authors;
+    public   List<Author> authors;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private BookStore bookStore;
+    public BookStore bookStore;
 
     public Book( String isbn, String title, String genre, int year, List<Author> authors, BookStore bookStore) {
         this.isbn = isbn;
@@ -34,7 +34,8 @@ public class Book {
         this.authors = authors;
         this.bookStore = bookStore;
     }
+public Book(){
 
-    public Book(String title, String isbn, String genre, int year, Optional<Book> bookStore) {
-    }
+}
+
 }

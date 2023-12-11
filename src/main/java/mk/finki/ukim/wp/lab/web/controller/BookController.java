@@ -38,7 +38,7 @@ public class BookController {
 
         Optional<Book> bookStore = bookStoreService.findById(bookStoreId);
         if (bookStore != null) {
-            Book book = new Book(title, isbn, genre, year, bookStore);
+            Book book = new Book();
             bookService.save(book);
             return "redirect:/books";
 

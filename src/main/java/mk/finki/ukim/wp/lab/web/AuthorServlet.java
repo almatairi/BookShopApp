@@ -17,29 +17,35 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 import java.util.List;
-
-@AllArgsConstructor
-@WebServlet(name = "author-servlet", urlPatterns = "/author")
+@WebServlet(name = "AuthorServlet", urlPatterns = {"/authors"})
 public class AuthorServlet extends HttpServlet {
-    private final SpringTemplateEngine springTemplateEngine;
     private final AuthorService authorService;
+    private final BookService bookService;
+    private final SpringTemplateEngine templateEngine;
+
+    public AuthorServlet(AuthorService authorService, BookService bookService, SpringTemplateEngine templateEngine) {
+        this.authorService = authorService;
+        this.bookService = bookService;
+        this.templateEngine = templateEngine;
+
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String selectedBookIsbn = req.getParameter("bookIsbn");
+
+        if (selectedBookIsbn == null || selectedBookIsbn.trim().isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Book ISBN is missing.");
+            return;
+        }
+
         IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext()).buildExchange(req, resp);
-
         WebContext context = new WebContext(webExchange);
-        String isbn = req.getParameter("isbn");
+
+        context.setVariable("selectedBookIsbn", selectedBookIsbn);
         context.setVariable("authors", authorService.listAuthors());
-        context.setVariable("isbn", isbn);
-        springTemplateEngine.process(
-                "authorList.html",
-                context,
-                        resp.getWriter()
-        );
+
+        templateEngine.process("authorList.html", context, resp.getWriter());
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect("/bookDetails");
-    }
 }
