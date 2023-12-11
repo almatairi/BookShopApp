@@ -1,22 +1,23 @@
 package mk.finki.ukim.wp.lab.service;
 
-import mk.finki.ukim.wp.lab.model.Author;
 import mk.finki.ukim.wp.lab.model.Book;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
-    List<Book> listBooks();
-    Optional<Book> findBookByIsbn(String  isbn);
-    Optional<Book> saveBook(String title, String isbn, String genre, int year, Long bookStoreId);
+   List<Book> listBooks();
+   Optional<Book> findBookIsbn(String isbn);
 
-    void editBook(String title, String isbn, String genre, int year, Long bookId);
+   Book findBookByIsbn(String isbn);
 
-    void editBook(Long bookId, String title, String isbn, String genre, int year, Long id);
+   Book addAuthorToBook(String isbn, Long authorId);
 
-    void deleteById(Long id);
+   List<Book> searchBooks(String search);
+   List<Book> findAll();
+   void save(Book book);
 
-    Optional<Book> findById(Long id);
-    void addAuthorToBook(Long authorId, String isbn);
+   Book findById(Long bookId);
+   void delete(Long id);
+   List<Book> findBooksByBookStoreId(Long bookStoreId);
 }

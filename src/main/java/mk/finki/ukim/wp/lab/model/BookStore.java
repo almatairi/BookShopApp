@@ -1,11 +1,13 @@
 package mk.finki.ukim.wp.lab.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "bookstore")
+@AllArgsConstructor
 public class BookStore {
 
     @Id

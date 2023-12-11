@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -34,6 +35,6 @@ public class Book {
         this.bookStore = bookStore;
     }
 
-    public Book() {
+    public Book(String title, String isbn, String genre, int year, Optional<Book> bookStore) {
     }
 }

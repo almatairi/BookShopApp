@@ -14,78 +14,32 @@ import static mk.finki.ukim.wp.lab.bootstrap.DataHolder.books;
 
 @Repository
 public class InMemoryBookRepository {
-
-//
-//    @Override
-//    public List<Book> findAll() {
-//        return books;
-//    }
-//
-//    @Override
-//    public Book findByIsbn(String isbn) {
-//        return (Book) books.stream().filter(r -> r.getIsbn().equals(isbn)).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public Author addAuthorToBook(Author author, Book book) {
-//        List<Book> updateBooks = books.stream().map(b -> {
-//            if (b.getIsbn().equals(book.getIsbn())) {
-//                b.getAuthors().add(author);
-//            }
-//            return b;
-//        }).collect(Collectors.toList());
-//
-//        DataHolder.books=updateBooks;
-//        return author;
-//    }
-//
-//    @Override
-//    public void edit(String title, String isbn, String genre, int year, Long bookId) {
-//
-//    }
-
-
-//    public void delete(Long bookId) {
-//        for (int i = 0; i < books.size(); i++) {
-//            if (books.get(i).id.equals(bookId)) {
-//                books.remove(i);
-//            }
-//
-//
-//        }
-//    }
-
     public List<Book> findAll(){
         return books;
     }
-    public Optional<Book> findById(Long id){
-        return DataHolder.books.stream().filter(i->i.getIsbn().equals(id)).findFirst();
-    }
-    public Book save(Book book){
-        if(book == null || book.getTitle().isEmpty()){
-            throw new IllegalArgumentException();
-        }
 
-        DataHolder.books.removeIf(b -> b.getTitle().equals(book.getTitle()));
-        DataHolder.books.add(book);
-        return book;
-    }
     public Optional<Book> findByIsbn(String isbn){
-        return DataHolder.books.stream().filter(b -> b.getIsbn().equals(isbn)).findFirst();
+        return books.stream().filter(book->book.getIsbn().equals(isbn)).findFirst();
     }
 
-    public void editBook(Long bookId, String title, String isbn, String genre, int year, Long id) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getId().equals(bookId)) {
-                books.get(i).setTitle(title);
-                books.get(i).setIsbn(isbn);
-                books.get(i).setGenre(genre);
-                books.get(i).setYear(year);
-            }
+    public Optional<Book> findById(Long id){
+        return books.stream().filter(book -> book.getId().equals(id)).findFirst();
+    }
+
+    public void addAuthorToBook(Author author, Book book){
+        if(author != null && book != null && !book.getAuthors().contains(author)){
+            book.getAuthors().add(author);
         }
     }
 
-    public void delete(Long bookId){
-        DataHolder.books.removeIf(b->b.getTitle().equals(bookId));
+    public void update(Book book){
+        books = books.stream().map(b-> b.getId().equals(book.getId()) ? book : b).collect(Collectors.toList());
+    }
+
+    public void delete(Long id){
+        books.removeIf(book -> book.getId().equals(id));
+    }
+    public void add(Book book){
+        books.add(book);
     }
 }
