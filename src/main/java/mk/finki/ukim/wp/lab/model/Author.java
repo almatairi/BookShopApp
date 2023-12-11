@@ -18,8 +18,6 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String surname;
 
     @Column(length = 4000)
     private String biography;
@@ -33,8 +31,7 @@ public class Author {
 
     public Author(Long id, String name, String surname, String biography, LocalDate dateofBirth) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
+
         this.biography = biography;
         this.dateofBirth = dateofBirth;
     }
